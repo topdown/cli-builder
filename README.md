@@ -143,11 +143,11 @@ $cli->pretty_dump( $your_array );
 ```php
 
 // At the top of your command class after your namespace
-use cli_builder\helpers\Console_Table;
+use cli_builder\helpers\cli_table;
 
 // Example Use
-$tbl = new Console_Table();
-$tbl->setHeaders(
+$tbl = new cli_able();
+$tbl->set_headers(
 	array( 'File Path', 'Size' )
 );
 
@@ -158,10 +158,10 @@ foreach ( $items as $item ) {
 	$size      = filesize( $item );;
 	// Add your row. 
 	//Make sure you have as many items in the addRow array as your setHeaders.
-	$tbl->addRow( array( $item, $size ) );
+	$tbl->add_row( array( $item, $size ) );
 }
 // Output the table.
-echo $tbl->getTable();
+echo $tbl->get_table();
 ```
 __Table Output Example__
 
