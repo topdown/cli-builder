@@ -53,8 +53,8 @@ Namespaces will __eventually__ generate proper directory structures. `commands/f
 
 ```php
 
-use cli_builder\command\Invoker;
-use cli_builder\command\Receiver;
+use cli_builder\command\invoker;
+use cli_builder\command\receiver;
 
 // Only command line
 if ( php_sapi_name() !== 'cli' ) {
@@ -68,8 +68,8 @@ $cli = new \cli_builder\cli();
 $cli->header();
 
 // Required to load our custom commands.
-$invoker  = new Invoker();
-$receiver = new Receiver();
+$invoker  = new invoker();
+$receiver = new receiver();
 
 // Your Custom commands.
 
@@ -84,22 +84,22 @@ include_once "commands/FooCommand.php";
 include_once "commands/BarCommand.php";
 
 // Register HelloCommand.
-$invoker->setCommand( new HelloCommand( $receiver ) );
+$invoker->set_command( new HelloCommand( $receiver ) );
 // Run the command.
 $invoker->run();
 
 // Register FooCommand.
-$invoker->setCommand( new FooCommand( $receiver ) );
+$invoker->set_command( new FooCommand( $receiver ) );
 // Run the command.
 $invoker->run();
 
 // Register BarCommand.
-$invoker->setCommand( new BarCommand( $receiver ) );
+$invoker->set_command( new BarCommand( $receiver ) );
 // Run the command.
 $invoker->run();
 
 // Outputs the results from all three commands registered above.
-echo $receiver->getOutput();
+echo $receiver->get_output();
 
 ```
 

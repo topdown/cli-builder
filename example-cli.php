@@ -17,8 +17,8 @@
  * example-cli.php
  */
 
-use cli_builder\command\Invoker;
-use cli_builder\command\Receiver;
+use cli_builder\command\invoker;
+use cli_builder\command\receiver;
 
 // Only command line
 if ( php_sapi_name() !== 'cli' ) {
@@ -32,8 +32,8 @@ $cli = new \cli_builder\cli();
 $cli->header();
 
 // Required to load our custom commands.
-$invoker  = new Invoker();
-$receiver = new Receiver();
+$invoker  = new invoker();
+$receiver = new receiver();
 
 // Your Custom commands.
 

@@ -40,10 +40,10 @@ include_once "src/helpers/cli_colors.php";
 
 // Interfaces and Cammand package to encapsulate, invocation and decoupling of future commands.
 // These are required.
-include_once "src/command/CommandInterface.php";
-include_once "src/command/UndoableCommandInterface.php";
-include_once "src/command/Receiver.php";
-include_once "src/command/Invoker.php";
+include_once "src/command/command_interface.php";
+include_once "src/command/undoable_command_interface.php";
+include_once "src/command/receiver.php";
+include_once "src/command/invoker.php";
 
 // The instance of the CLI.
 // Required to use the built in simplicity, IE output, arg handling, progress bar, etc..

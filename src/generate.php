@@ -149,23 +149,23 @@ class generate {
 
 ";
 		if ( ! empty( $this->_namespace ) ) {
-			$template .= "namespace cli_builder\commands\\$this->_namespace;";
+			$template .= "namespace cli_builder\\commands\\$this->_namespace;";
 		} else {
-			$template .= "namespace cli_builder\commands;";
+			$template .= "namespace cli_builder\\commands;";
 		}
 
 		$template .= "
 
-use cli_builder\command\CommandInterface;
-use cli_builder\command\Receiver;
+use cli_builder\\command\\command_interface;
+use cli_builder\\command\\receiver;
 
 /**
- * This concrete command calls \"print\" on the Receiver, but an external.
+ * This concrete command calls \"print\" on the receiver, but an external.
  * invoker just knows that it can call \"execute\"
  */
-class {$this->_command_name} implements CommandInterface {
+class {$this->_command_name} implements command_interface {
 	/**
-	 * @var Receiver
+	 * @var receiver
 	 */
 	private \$output;
 
@@ -173,9 +173,9 @@ class {$this->_command_name} implements CommandInterface {
 	 * Each concrete command is built with different receivers.
 	 * There can be one, many or completely no receivers, but there can be other commands in the parameters
 	 *
-	 * @param Receiver \$console
+	 * @param receiver \$console
 	 */
-	public function __construct( Receiver \$console ) {
+	public function __construct( receiver \$console ) {
 		\$this->output = \$console;
 	}
 
