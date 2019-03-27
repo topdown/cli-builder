@@ -91,6 +91,29 @@ echo $receiver->getOutput();
 
 ### CLI Helpers
 
+#### Separator (full width of the current window)
+```php
+$cli->separator();
+// Default output
+-----------------------------------------------------------------
+
+// Custom
+$cli->separator('+');
+// Custom output
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+```
+
+#### Text
+```php
+// Adds a \n (new line) return on the end.
+$cli->text('My text');
+
+// Centered Text, will center it in the window
+$cli->text('My centered text', true);
+
+```
+
 #### Progress bar for long running processes (optional)
 ```php
 $cli->progress_bar( $done, $tasks);
