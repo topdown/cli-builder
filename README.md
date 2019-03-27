@@ -146,7 +146,7 @@ $cli->pretty_dump( $your_array );
 use cli_builder\helpers\cli_table;
 
 // Example Use
-$tbl = new cli_able();
+$tbl = new cli_table();
 $tbl->set_headers(
 	array( 'File Path', 'Size' )
 );
