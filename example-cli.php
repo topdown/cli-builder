@@ -6,7 +6,7 @@
  *
  * Created: 2019-03-27, 13:46
  *
- * LICENSE:
+ * LICENSE: https://raw.githubusercontent.com/topdown/cli-builder/master/LICENSE
  *
  * @author         Jeff Behnke <code@validwebs.com>
  * @copyright  (c) 2009 - 2019 ValidWebs.com
@@ -16,6 +16,9 @@
  * cli-builder
  * example-cli.php
  */
+
+use cli_builder\command\Invoker;
+use cli_builder\command\Receiver;
 
 // Only command line
 if ( php_sapi_name() !== 'cli' ) {

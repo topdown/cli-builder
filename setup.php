@@ -7,13 +7,11 @@
  *
  * Created: 2019-03-27, 12:31
  *
- * LICENSE:
- *
  * @author         Jeff Behnke <code@validwebs.com>
  * @copyright  (c) 2009 - 2019 ValidWebs.com
  * @package        cli-builder - setup.php
- * @license
- * @version
+ * @license        https://raw.githubusercontent.com/topdown/cli-builder/master/LICENSE
+ * @version        0.0.1
  * cli-builder
  * setup.php
  */

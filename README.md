@@ -41,6 +41,10 @@ mkdir commands
 ### Setup  (see) example-cli.php
 
 ```php
+
+use cli_builder\command\Invoker;
+use cli_builder\command\Receiver;
+
 // Only command line
 if ( php_sapi_name() !== 'cli' ) {
 	die( 'This is a command line tool only.' );
