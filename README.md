@@ -41,7 +41,7 @@ mkdir commands
 ### Generating Starter Commands
 
 ```bash
-php gen.php command=testing namespace=foo_bar
+sh gen.sh command=testing namespace=foo_bar
 
 ```
 Will generate a command class named `testing` with the namespace `cli_builder\commands\foo_bar` in the `commands` directory.
