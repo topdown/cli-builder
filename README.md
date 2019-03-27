@@ -204,16 +204,6 @@ echo $colors->get_colored( 'Colored text and background', 'light_blue', 'black' 
 | yellow           |             |
 | light_gray       |             |
 | white            |             |
-  
-__Background Colors__
-  
-
-
-
-
-
-
-
 
 
 #### Benchmark (optional)
