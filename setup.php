@@ -12,8 +12,7 @@
  * @package        cli-builder - setup.php
  * @license        https://raw.githubusercontent.com/topdown/cli-builder/master/LICENSE
  * @version        0.0.1
- * cli-builder
- * setup.php
+ *
  */
 
 $start = microtime();
@@ -36,6 +35,7 @@ define( 'CLIB_PATH', __DIR__ );
 
 // Helpers - Mostly for visual decorating.
 include_once "src/helpers/Console_Table.php";
+include_once "src/helpers/cli_table.php";
 include_once "src/helpers/cli_colors.php";
 
 // Interfaces and Cammand package to encapsulate, invocation and decoupling of future commands.
