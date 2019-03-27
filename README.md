@@ -4,7 +4,6 @@ CLI Builder aims to help simplify building powerful CLI commands for PHP.
 
 ![alt text](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
 
-
 The main CLI class implements a handler that parses the string passed via `$argv`
 
 It is parsed into an array as follows.
@@ -23,7 +22,23 @@ __Example__
 php cli.php mycommand --option_no_val --option_with_val="Hello World" myarg="foo bar" -m  debug
 ```
 
-### Setup
+### Getting Started.
+
+_Composer setup is coming soon which will be the preferred way._
+
+```bash
+git clone https://github.com/topdown/cli-builder.git
+
+cd cli-builder
+
+mkdir logs
+chmod 777 logs
+
+mkdir commands
+
+```
+
+### Setup  (see) example-cli.php
 
 ```php
 // Only command line
