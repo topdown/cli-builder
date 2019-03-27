@@ -64,9 +64,9 @@ $receiver = new Receiver();
 
 ```php
 // Custom commands.
-include_once "src/commands/HelloCommand.php";
-include_once "src/commands/FooCommand.php";
-include_once "src/commands/BarCommand.php";
+include_once "commands/HelloCommand.php";
+include_once "commands/FooCommand.php";
+include_once "commands/BarCommand.php";
 
 // Register HelloCommand.
 $invoker->setCommand( new HelloCommand( $receiver ) );
