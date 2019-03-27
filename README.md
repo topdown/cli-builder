@@ -131,7 +131,7 @@ for ( $done = 0; $done <= $tasks; $done ++ ) {
 ```
 
 #### Pretty Dump (optional)
-See the collored array in the [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
+See the colored array in the [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
 
 ```php
 $cli->pretty_dump( $your_array );
@@ -179,9 +179,42 @@ __Table Output Example__
 
 #### Colors (optional)
 ```php
-
-
+$colors = new \cli_builder\helpers\cli_colors();
+// Just colored text.
+echo $colors->get_colored( 'Just colored text', 'green' );
+// Colored text and background.
+echo $colors->get_colored( 'Colored text and background', 'light_blue', 'black' );
 ```
+
+| Text Colors | Background Colors |
+|:---:|:---:|
+| black             | black      |  
+| dark_gray         | red        |  
+| blue              | green      |  
+| light_blue        | yellow     |  
+| green             | blue       |  
+| light_green       | magenta    |  
+| cyan              | cyan       |  
+| light_cyan        | light_gray |  
+| red              |             |
+| light_red        |             |
+| purple           |             |
+| light_purple     |             |
+| brown            |             |
+| yellow           |             |
+| light_gray       |             |
+| white            |             |
+  
+__Background Colors__
+  
+
+
+
+
+
+
+
+
 
 #### Benchmark (optional)
 ```php
