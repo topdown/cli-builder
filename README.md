@@ -34,7 +34,7 @@ if ( php_sapi_name() !== 'cli' ) {
 include_once 'setup.php';
 
 $cli = new \cli_builder\cli();
-// Our header output.
+// Our header output. (optional)
 $cli->header();
 
 // Required to load our custom commands.
@@ -76,7 +76,7 @@ echo $receiver->getOutput();
 
 ### CLI Helpers
 
-#### Progress bar for long running processes
+#### Progress bar for long running processes (optional)
 ```php
 $cli->progress_bar( $done, $tasks);
 
@@ -88,13 +88,13 @@ for ( $done = 0; $done <= $tasks; $done ++ ) {
 }
 ```
 
-#### Pretty Dump
+#### Pretty Dump (optional)
 ```php
 // See the collored array in the screenshot above.
-$cli->pretty_dump( $arguments );
+$cli->pretty_dump( $your_array );
 ```
 
-#### Table Data
+#### Table Data (optional)
 ```php
 
 // At the top of your command class after your namespace
@@ -125,7 +125,7 @@ echo $tbl->getTable();
 
 ```
 
-#### Benchmark
+#### Benchmark (optional)
 ```php
 // Will output the time to process in seconds and also the max memory used.
 $cli->benchmark( $start );
