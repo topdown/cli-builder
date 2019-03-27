@@ -118,8 +118,23 @@ foreach ( $items as $item ) {
 // Output the table.
 echo $tbl->getTable();
 ```
+__Table Output Example__
 
-#### Colors
+```bash
++--------------------------------+------+
+| File Path                      | Size |
++--------------------------------+------+
+| ./cli-builder/assets/index.php | 297  |
+| ./index.php                    | 325  |
+| ./logs/index.php               | 297  |
+| ./src/index.php                | 297  |
+| ./src/commands/index.php       | 297  |
+| ./src/command/index.php        | 297  |
+| ./src/helpers/index.php        | 297  |
++--------------------------------+------+
+```
+
+#### Colors (optional)
 ```php
 
 
