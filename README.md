@@ -2,7 +2,7 @@
 
 CLI Builder aims to help simplify building powerful CLI commands for PHP.
 
-![alt text](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
+[Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
 
 The main CLI class implements a handler that parses the string passed via `$argv`
 
@@ -131,8 +131,9 @@ for ( $done = 0; $done <= $tasks; $done ++ ) {
 ```
 
 #### Pretty Dump (optional)
+See the collored array in the [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
+
 ```php
-// See the collored array in the screenshot above.
 $cli->pretty_dump( $your_array );
 ```
 
