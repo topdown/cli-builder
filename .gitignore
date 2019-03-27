@@ -1,3 +1,6 @@
 commands
 logs
 cli.php
+src/command
+!src/cli.php
+.idea
