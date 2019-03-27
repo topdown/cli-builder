@@ -38,6 +38,17 @@ mkdir commands
 
 ```
 
+### Generating Starter Commands
+
+```bash
+php gen.php command=testing namespace=foo_bar
+
+```
+Will generate a command class named `testing` with the namespace `cli_builder\commands\foo_bar` in the `commands` directory.
+
+Namespaces will __eventually__ generate proper directory structures. `commands/foo_bar/testing.php`
+
+
 ### Setup  (see) example-cli.php
 
 ```php

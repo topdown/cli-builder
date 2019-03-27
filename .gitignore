@@ -4,3 +4,4 @@ cli.php
 src/command
 !src/cli.php
 .idea
+generate.php
