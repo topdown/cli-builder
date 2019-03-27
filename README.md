@@ -95,6 +95,8 @@ echo $receiver->getOutput();
 
 ### CLI Helpers
 
+All of these styling helpers are __optional__.
+
 #### Separator (full width of the current window)
 ```php
 $cli->separator();
