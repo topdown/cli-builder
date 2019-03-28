@@ -9,3 +9,4 @@ phpunit.xml
 composer.phar
 bootstrap.php
 composer.lock
+test.php
