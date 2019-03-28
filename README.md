@@ -103,6 +103,14 @@ echo $receiver->get_output();
 
 ```
 
+### Layout
+
+Hiding the logo and date
+```php
+// The first param is for logo and second for date.
+$cli->header(false,false);
+
+```
 
 ### CLI Helpers
 

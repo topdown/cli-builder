@@ -67,12 +67,16 @@ class cli {
 	 *
 	 * Created:    3/27/19, 9:06 AM
 	 *
+	 * @param bool $logo
+	 * @param bool $date
 	 */
-	public function header() {
-		$color = new cli_colors();
+	public function header( $logo = true, $date = true ) {
 
-		$logo
-			= <<<LOGO
+		if ( $logo === true ) {
+			$color = new cli_colors();
+
+			$logo
+				= <<<LOGO
 
    ██████╗██╗     ██╗    ██████╗ ██╗   ██╗██╗██╗     ██████╗ ███████╗██████╗ 
   ██╔════╝██║     ██║    ██╔══██╗██║   ██║██║██║     ██╔══██╗██╔════╝██╔══██╗
@@ -81,8 +85,14 @@ class cli {
   ╚██████╗███████╗██║    ██████╔╝╚██████╔╝██║███████╗██████╔╝███████╗██║  ██║
    ╚═════╝╚══════╝╚═╝    ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝ ╚══════╝╚═╝  ╚═╝    
 LOGO;
-		echo $color->get_colored( "\n$logo\n", "cyan", "black" ) . "\n";
-		$this->text( '[' . date( 'm-d-Y h:m:s' ) . ']', true );
+			echo $color->get_colored( "\n$logo\n", "cyan", "black" ) . "\n";
+		}
+
+		$this->separator();
+
+		if ( $date === true ) {
+			$this->text( '[' . date( 'm-d-Y h:m:s' ) . ']', true );
+		}
 		$this->separator();
 	}
 
@@ -477,9 +487,32 @@ LOGO;
 	 *
 	 */
 	public function help() {
+		echo "
+php cli.php your_command                    | basic command.
+php cli.php debug                           | adds print_r for the \$argv.
+php cli.php --option_no_val                 | will have empty value.
+php cli.php --option_with_val='Hello World' | basic use of options.
+php cli.php myarg='foo bar'                 | basic use of arguments.
+php cli.php -m                              | custom flags.
 
+You can add your own help commands like 
+php cli.php my_command -h 
+Then watch for the -h in your command code.  
+		";
 	}
 
+	/**
+	 * Link to the repository for outputting in the command line.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:     2019-03-27, 19:30
+	 *
+	 */
+	public function repo() {
+		echo 'https://github.com/topdown/cli-builder/';
+	}
 
 	/**
 	 * Makes it so we can have nice formatted and colored dumps in the command line.
