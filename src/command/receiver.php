@@ -28,7 +28,7 @@ class receiver {
 	}
 
 	public function get_output(): string {
-		return join( "\n", $this->output ) . "\n";
+		return join( "\n", $this->output );
 	}
 
 	/**

@@ -4,3 +4,8 @@ cli.php
 !src/cli.php
 .idea
 src/command/Tests
+/vendor/
+phpunit.xml
+composer.phar
+bootstrap.php
+composer.lock
