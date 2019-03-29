@@ -35,14 +35,19 @@ class cli {
 	 *
 	 * @property  $cols
 	 */
-	private $_cols;
+	private $_cols = 30;
 
 	/**
 	 * cli constructor.
 	 */
 	public function __construct() {
 		// Set the current window columns.
-		$this->_cols = exec( "tput cols" );
+		$this->_cols = (int) exec( "tput cols" );
+
+		// Make sure we always have columns.
+		if ( $this->_cols <= 0 ) {
+			$this->_cols = 30;
+		}
 	}
 
 	/**
