@@ -7,6 +7,7 @@
 	  "email" : "code@validwebs.com"
 	}
   ],
+  "minimum-stability" : "dev",
   "require" :     {
 	"php" :              ">=7.1",
 	"psr/http-message" : "^1.0"
