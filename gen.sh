@@ -29,6 +29,7 @@ done
 if [ ${command} ]; then
 
 php src/generate.php command=${command} namespace=${namespace}
+
 else
 	    echo To generate a command you must enter a command name with no spaces.
 		echo Example
