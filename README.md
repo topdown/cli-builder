@@ -1,6 +1,6 @@
 ![alt text](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/logo.jpg)
 
-CLI Builder aims to help simplify building powerful CLI commands for PHP.
+CLI Builder is a PHP Command Line Builder that aims to help simplify building powerful CLI commands for PHP.
 
 [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
 
@@ -35,6 +35,8 @@ mkdir logs
 chmod 777 logs
 
 mkdir commands
+
+cp example-cli.php cli.php
 
 ```
 

@@ -406,7 +406,7 @@ LOGO;
 					continue;
 				}
 
-				$value = '';
+				$value = "";
 				$com   = substr( $arg, 2 );
 
 				// is it the syntax '--option=argument'?
@@ -460,8 +460,9 @@ LOGO;
 
 				$part = explode( '=', $arg );
 
-				if ( isset( $part[0] ) && isset( $part[1] ) && $part[1] != '' ) {
-					$ret['arguments'][ trim( $part[0] ) ] = trim( $part[1] );
+				if ( isset( $part[0] ) && isset( $part[1] ) ) {
+					$key = str_replace(' ', '_', trim($part[0]));
+					$ret['arguments'][ $key ] = trim( $part[1] );
 				} else {
 					$ret['arguments'][] = trim( $arg );
 				}
