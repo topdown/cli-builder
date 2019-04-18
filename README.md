@@ -50,7 +50,17 @@ In your command class.
 
 ```php
 $args  = $this->_cli->get_args();
-$myarg = ( isset( $args['arguments']['myarg'] ) ) ? $args['arguments']['myarg'] : 'foobar';
+$myarg = ( isset( $args['arguments']['myarg'] ) ) ? $args['arguments']['myarg'] : null;
+
+if( ! is_null( $myarg ) ) {
+	// Do something with your argument.
+}
+
+// Or if you want it required you could force an error output and exit;
+if( is_null( $myarg ) ) {
+	$this->_cli->text('myarg is required. Eg. myarg=something');
+	exit;
+}
 
 ```
 
