@@ -22,6 +22,30 @@ __Example__
 php cli.php mycommand --option_no_val --option_with_val="Hello World" myarg="foo_bar" -m  debug
 ```
 
+Would be an array of instructions to use in your command class like the following.
+```
+Array(4)
+|   
+|   [commands] => Array(1)
+|   |   
+|   |   [0] => String(6) "module"
+|   |   
+|   [options] => Array(2)
+|   |   
+|   |   [option_no_val] => String(0) ""
+|   |   [option_with_val] => String(11) "Hello World"
+|   |   
+|   [flags] => Array(1)
+|   |   
+|   |   [0] => String(1) "m"
+|   |   
+|   [arguments] => Array(1)
+|   |   
+|   |   [myarg] => String(7) "foo bar"
+|   |   
+|   
+```
+
 ### Getting Started.
 
 _Composer setup is coming soon which will be the preferred way._
