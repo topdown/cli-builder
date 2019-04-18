@@ -41,7 +41,7 @@ Array(4)
 |   |   
 |   [arguments] => Array(1)
 |   |   
-|   |   [myarg] => String(7) "foo bar"
+|   |   [myarg] => String(7) "foo_bar"
 |   |   
 |   
 ```
