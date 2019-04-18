@@ -55,9 +55,9 @@ if ( php_sapi_name() === 'cli' ) {
 			die( "Something went wrong. \nMake sure the commands/ directory exists and has write permissions.\n" );
 		}
 	} else {
-//		echo "To generate a command you must enter a command name with no spaces.\n";
-//		echo "Example\n";
-//		echo "php gen.php command=testing namespace=foo_bar\n";
+		//		echo "To generate a command you must enter a command name with no spaces.\n";
+		//		echo "Example\n";
+		//		echo "php gen.php command=testing namespace=foo_bar\n";
 	}
 
 } else {
@@ -156,6 +156,8 @@ class generate {
 
 		$template .= "
 
+use cli_builder\\cli;
+use cli_builder\\command\\builder;
 use cli_builder\\command\\command_interface;
 use cli_builder\\command\\receiver;
 
@@ -164,27 +166,60 @@ use cli_builder\\command\\receiver;
  * invoker just knows that it can call \"execute\"
  */
 class {$this->_command_name} implements command_interface {
-	/**
-	 * @var receiver
-	 */
-	private \$output;
 
+	/**
+	 * @property receiver \$_command
+	 */
+	private \$_command;
+
+	/**
+	 * @property builder \$_builder
+	 */
+	private \$_builder;
+	
+	/**
+	 * @property cli \$_cli 
+	 */
+	private \$_cli;
+	
 	/**
 	 * Each concrete command is built with different receivers.
-	 * There can be one, many or completely no receivers, but there can be other commands in the parameters
+	 * There can be one, many or completely no receivers, but there can be other commands in the parameters.
 	 *
 	 * @param receiver \$console
+	 * @param builder  \$builder
+	 * @param cli      \$cli
 	 */
-	public function __construct( receiver \$console ) {
-		\$this->output = \$console;
+	public function __construct( receiver \$console, builder \$builder, cli \$cli ) {
+		\$this->_command = \$console;
+		\$this->_builder = \$builder;
+		\$this->_cli     = \$cli;
 	}
 
+
 	/**
-	 * execute and output \"$this->_command_name\".
+	 * Execute and output \"$this->_command_name\".
+	 *
+	 * @return mixed|void
 	 */
 	public function execute() {
-		// sometimes, there is no receiver and this is the command which does all the work
-		\$this->output->write( '$this->_command_name' );
+	
+		// Get the args that were used in the command line input.
+		\$args = \$this->_cli->get_args();
+	
+		// Create the build directory tree. It will be 'build/' if \$receiver->set_build_path() is not set in your root cli.php.
+		if ( ! is_dir( \$this->_command->build_path ) ) {
+			\$this->_builder->create_directory( \$this->_command->build_path );
+		}
+
+		\$this->_cli->pretty_dump( \$args );
+
+		
+		// Will output all content sent to the write method at the end even if it was set in the beginning.
+		\$this->_command->write( __CLASS__ . ' completed run.' );
+
+		// Adding completion of the command run to the log.
+		\$this->_command->log(__CLASS__ . ' completed run.');
 	}
 }
 ";

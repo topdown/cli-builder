@@ -21,25 +21,37 @@ namespace cli_builder\command;
  * Example : an Application in SF2.
  */
 class invoker {
-	/**
-	 * @var command_interface
-	 */
-	private $command;
 
 	/**
-	 * in the invoker we find this kind of method for subscribing the command
+	 * @property  $_command
+	 */
+	private $_command;
+
+	/**
+	 * In the invoker we find this kind of method for subscribing the command.
 	 * There can be also a stack, a list, a fixed set ...
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:     2019-04-18, 11:07
 	 *
 	 * @param command_interface $cmd
 	 */
 	public function set_command( command_interface $cmd ) {
-		$this->command = $cmd;
+		$this->_command = $cmd;
 	}
 
 	/**
-	 * executes the command; the invoker is the same whatever is the command
+	 *  Executes the command; the invoker is the same whatever is the command.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:     2019-04-18, 11:07
+	 *
 	 */
 	public function run() {
-		$this->command->execute();
+		$this->_command->execute();
 	}
 }

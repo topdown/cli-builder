@@ -38,9 +38,19 @@ class cli {
 	private $_cols = 30;
 
 	/**
-	 * cli constructor.
+	 * @property array $args
 	 */
-	public function __construct() {
+	protected $args = [];
+
+	/**
+	 * cli constructor.
+	 *
+	 * @param array $arguments
+	 */
+	public function __construct( $arguments = array() ) {
+		// Set the command line arguments.
+		$this->args = $arguments;
+
 		// Set the current window columns.
 		$this->_cols = (int) exec( "tput cols" );
 
@@ -48,6 +58,20 @@ class cli {
 		if ( $this->_cols <= 0 ) {
 			$this->_cols = 30;
 		}
+	}
+
+	/**
+	 * Get the command line passed arguments array.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:     2019-04-18, 16:30
+	 *
+	 * @return array
+	 */
+	public function get_args() {
+		return $this->args;
 	}
 
 	/**
@@ -61,44 +85,6 @@ class cli {
 	 */
 	protected function get_columns() {
 		return $this->_cols;
-	}
-
-	/**
-	 *
-	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009 - 2019 ValidWebs.com
-	 *
-	 *
-	 * Created:    3/27/19, 9:06 AM
-	 *
-	 * @param bool $logo
-	 * @param bool $date
-	 */
-	public function header( $logo = true, $date = true ) {
-
-		if ( $logo === true ) {
-			$color = new cli_colors();
-
-			$logo
-				= <<<LOGO
-
-   ██████╗██╗     ██╗    ██████╗ ██╗   ██╗██╗██╗     ██████╗ ███████╗██████╗ 
-  ██╔════╝██║     ██║    ██╔══██╗██║   ██║██║██║     ██╔══██╗██╔════╝██╔══██╗
-  ██║     ██║     ██║    ██████╔╝██║   ██║██║██║     ██║  ██║█████╗  ██████╔╝
-  ██║     ██║     ██║    ██╔══██╗██║   ██║██║██║     ██║  ██║██╔══╝  ██╔══██╗
-  ╚██████╗███████╗██║    ██████╔╝╚██████╔╝██║███████╗██████╔╝███████╗██║  ██║
-   ╚═════╝╚══════╝╚═╝    ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝ ╚══════╝╚═╝  ╚═╝    
-LOGO;
-			echo $color->get_colored( "\n$logo\n", "cyan", "black" ) . "\n";
-		}
-
-		$this->separator();
-
-		if ( $date === true ) {
-			$this->text( '[' . date( 'm-d-Y h:m:s' ) . ']', true );
-		}
-		$this->separator();
 	}
 
 	/**
@@ -119,48 +105,6 @@ LOGO;
 		}
 	}
 
-	/**
-	 *
-	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009 - 2019 ValidWebs.com
-	 *
-	 * Created:    3/27/19, 9:06 AM
-	 *
-	 */
-	public function footer() {
-
-	}
-
-	/**
-	 * Simple profiler that starts at the begginning and outputs the time and membory at the end.
-	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009 - 2019 ValidWebs.com
-	 *
-	 * Created:    3/27/19, 9:07 AM
-	 *
-	 * @param $start
-	 */
-	public function benchmark( $start ) {
-		$mtime     = microtime();
-		$mtime     = explode( ' ', $mtime );
-		$timestart = explode( ' ', $start );
-		$starttime = $timestart[1] + $timestart[0];
-		$timeend   = $mtime[1] + $mtime[0];
-		$timetotal = $timeend - $starttime;
-		$r         = number_format( $timetotal, 5 );
-
-		echo "\n";
-		$this->separator( '+' );
-		$this->text( 'Benchmark', true );
-		$this->separator( '+' );
-		echo "Load Time:                               $r seconds\n";
-		if ( function_exists( 'memory_get_peak_usage' ) ) {
-			echo "Peak Memory Usage:                       " . round( memory_get_peak_usage() / 1048576, 6 ) . " MiB\n";
-		}
-		$this->separator( '+' );
-	}
 
 	/**
 	 * A progress bar for long running processing.
@@ -287,11 +231,11 @@ LOGO;
 	 * @param string $words
 	 */
 	public function lines( $words = '' ) {
-		echo "-------------------------------------------------------\n";
+		echo str_repeat( "-", $this->_cols ) . "\n";
 		if ( ! empty( $words ) ) {
 			fwrite( STDOUT, $words );
 			$this->nl();
-			echo "-------------------------------------------------------\n";
+			echo str_repeat( "-", $this->_cols ) . "\n";
 		}
 	}
 
@@ -358,132 +302,6 @@ LOGO;
 	}
 
 	/**
-	 * Command argument handling the creates an array for command --options -flags arguments=.
-	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009 - 2019 ValidWebs.com
-	 *
-	 * Created:    2/8/18, 9:48 AM
-	 *
-	 * @param $args
-	 *
-	 * @return array
-	 */
-	public function handler( $args ) {
-
-		// We don't want the default stuff on $argv.
-		array_shift( $args );
-		$end_of_options = false;
-
-		// Our container for the types of command args.
-		$ret = array(
-			'commands'  => array(),
-			'options'   => array(),
-			'flags'     => array(),
-			'arguments' => array(),
-		);
-
-		while ( $arg = array_shift( $args ) ) {
-
-			// if we have reached end of options,
-			//we cast all remaining argvs as arguments
-			if ( $end_of_options ) {
-				$ret['arguments'][] = $arg;
-				continue;
-			}
-
-			/**
-			 * -------------------------------------------
-			 * OPTIONS
-			 * -------------------------------------------
-			 * Is it a command? (prefixed with --)
-			 */
-			if ( substr( $arg, 0, 2 ) === '--' ) {
-
-				// is it the end of options flag?
-				if ( ! isset ( $arg[3] ) ) {
-					$end_of_options = true; // end of options;
-					continue;
-				}
-
-				$value = "";
-				$com   = substr( $arg, 2 );
-
-				// is it the syntax '--option=argument'?
-				if ( strpos( $com, '=' ) ) {
-
-					list( $com, $value ) = preg_split( "/=/", $com, 2 );
-
-				} // is the option not followed by another option but by arguments
-				elseif ( isset( $args[0] ) && strpos( $args[0], '-' ) !== 0 ) {
-
-					// --word with no =value creates an indefinate loop of errors.
-					// This check fixes that.
-					if ( isset( $args[0] ) ) {
-
-						while ( strpos( $args[0], '-' ) !== 0 ) {
-							$value .= array_shift( $args ) . ' ';
-						}
-
-						$value = rtrim( $value, ' ' );
-					}
-				}
-
-				$ret['options'][ $com ] = ( ! empty( trim( $value ) ) ) ? $value : '';
-
-				continue;
-
-			}
-
-			/**
-			 * -------------------------------------------
-			 * FLAGS
-			 * -------------------------------------------
-			 * Is it a flag or a serial of flags? (prefixed with -)
-			 */
-			if ( substr( $arg, 0, 1 ) === '-' ) {
-
-				for ( $i = 1; isset( $arg[ $i ] ); $i ++ ) {
-					$ret['flags'][] = trim( $arg[ $i ] );
-				}
-
-				continue;
-			}
-
-			/**
-			 * -------------------------------------------
-			 * ARGUMENTS
-			 * -------------------------------------------
-			 * If it has an = but is not in quotes, its arguments.
-			 */
-			if ( strpos( $arg, '=' ) !== false ) {
-
-				$part = explode( '=', $arg );
-
-				if ( isset( $part[0] ) && isset( $part[1] ) ) {
-					$key = str_replace(' ', '_', trim($part[0]));
-					$ret['arguments'][ $key ] = trim( $part[1] );
-				} else {
-					$ret['arguments'][] = trim( $arg );
-				}
-
-				continue;
-			}
-
-			/**
-			 * -------------------------------------------
-			 * COMMANDS
-			 * -------------------------------------------
-			 * It is not an option, or flag, or argument so it has to be a command.
-			 */
-			$ret['commands'][] = $arg;
-			continue;
-		}
-
-		return $ret;
-	}
-
-	/**
 	 * The CLI Builder Help content.
 	 *
 	 * @author         Jeff Behnke <code@validwebs.com>
@@ -505,19 +323,6 @@ You can add your own help commands like
 php cli.php my_command -h 
 Then watch for the -h in your command code.  
 		";
-	}
-
-	/**
-	 * Link to the repository for outputting in the command line.
-	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009 - 2019 ValidWebs.com
-	 *
-	 * Created:     2019-03-27, 19:30
-	 *
-	 */
-	public function repo() {
-		echo 'https://github.com/topdown/cli-builder/';
 	}
 
 	/**

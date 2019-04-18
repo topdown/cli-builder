@@ -48,6 +48,7 @@ include_once "src/command/invoker.php";
 // The instance of the CLI.
 // Required to use the built in simplicity, IE output, arg handling, progress bar, etc..
 include_once "src/cli.php";
-
+include_once 'src/cli_base.php';
+include_once 'src/command/builder.php';
 
 // End setup.php

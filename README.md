@@ -19,7 +19,7 @@ __This makes your CLI options endless for each command you want to build.__
 
 __Example__
 ```bash
-php cli.php mycommand --option_no_val --option_with_val="Hello World" myarg="foo bar" -m  debug
+php cli.php mycommand --option_no_val --option_with_val="Hello World" myarg="foo_bar" -m  debug
 ```
 
 ### Getting Started.
@@ -27,6 +27,10 @@ php cli.php mycommand --option_no_val --option_with_val="Hello World" myarg="foo
 _Composer setup is coming soon which will be the preferred way._
 
 ```bash
+mkdir cli
+
+cd cli
+
 git clone https://github.com/topdown/cli-builder.git
 
 cd cli-builder
@@ -36,17 +40,23 @@ chmod 777 logs
 
 mkdir commands
 
-cp example-cli.php cli.php
+# I use CLI Builder for generating scaffolds so I also have templates for my commands.
+# This is where I put my template functions for adding pre templated code to files.
+mkdir commands/templates
+
+cp cli-builder/example-cli.php cli.php
 
 ```
 
 ### Generating Starter Commands
 
 ```bash
-sh gen.sh command=testing namespace=foo_bar
+php cli-builder/src/generate.php command=testing namespace=foo_bar
 
 ```
 Will generate a command class named `testing` with the namespace `cli_builder\commands\foo_bar` in the `commands` directory.
+
+__NOTE:__ Leaving the `namespace=` off of this command makes the namespace default to `namespace cli_builder\commands;`
 
 Namespaces will __eventually__ generate proper directory structures. `commands/foo_bar/testing.php`
 
@@ -63,21 +73,30 @@ if ( php_sapi_name() !== 'cli' ) {
 	die( 'This is a command line tool only.' );
 }
 
-include_once 'setup.php';
+include_once 'cli-builder/setup.php';
 
-$cli = new \cli_builder\cli();
+// CLI Base methods
+$cli_base = new \cli_builder\cli_base();
+
+// Loads your command line args into an array( options=[], arguments=[] commands=[], flags=[] ).
+$arguments = $cli_base->handler( $argv );
+
+// Start the CLI
+$cli = new \cli_builder\cli( $arguments );
+
 // Our header output. (optional)
-$cli->header();
+$cli_base->header();
 
-// Required to load our custom commands.
-$invoker  = new invoker();
-$receiver = new receiver();
-
-// Your Custom commands.
+// New CLI Builder with creation methods.
+$builder = new \cli_builder\command\builder();
 
 ```
 
 ### Registering Commands
+
+__NOTE:__ If you change commands with a single $invoker and single $receiver they will all run and output at the end of the run.
+
+It's better to use a switch and separate commands like in the next section __Example Commands cli.php__.
 
 ```php
 // Custom commands.
@@ -86,17 +105,17 @@ include_once "commands/FooCommand.php";
 include_once "commands/BarCommand.php";
 
 // Register HelloCommand.
-$invoker->set_command( new HelloCommand( $receiver ) );
+$invoker->set_command( new \cli_builder\commands\HelloCommand( $receiver ) );
 // Run the command.
 $invoker->run();
 
 // Register FooCommand.
-$invoker->set_command( new FooCommand( $receiver ) );
+$invoker->set_command( new \cli_builder\commands\FooCommand( $receiver ) );
 // Run the command.
 $invoker->run();
 
 // Register BarCommand.
-$invoker->set_command( new BarCommand( $receiver ) );
+$invoker->set_command( new \cli_builder\commands\BarCommand( $receiver ) );
 // Run the command.
 $invoker->run();
 
@@ -105,14 +124,106 @@ echo $receiver->get_output();
 
 ```
 
+#### Example Commands cli.php
+
+```php
+// Lots of commands
+foreach ( $arguments['commands'] as $command ) {
+
+	switch ( $command ) {
+
+		case 'command1':
+		
+			// Required to load our custom commands.
+			$invoker  = new invoker();
+			$receiver = new receiver();
+			
+			// Custom build path. Defaults to build/
+			$receiver->set_build_path( 'build/api' );
+			
+			// Include your command.
+			include_once "commands/command1.php";
+			
+			// Register BarCommand.
+			$invoker->set_command( new \cli_builder\commands\command1( $receiver ) );
+			
+			
+			// Run the command.
+			$invoker->run();
+		break;
+
+		case 'command2':
+			// Required to load our custom commands.
+			$invoker  = new invoker();
+			$receiver = new receiver();
+			
+			// Include your command.
+			include_once "commands/command2.php";
+			
+			// Register BarCommand.
+			$invoker->set_command( new \cli_builder\commands\command2( $receiver ) );
+			
+			// Run the command.
+			$invoker->run();
+		break;
+	}
+}
+
+```
+
 ### Layout
 
 Hiding the logo and date
 ```php
 // The first param is for logo and second for date.
-$cli->header(false,false);
+$cli->header( false, false);
 
 ```
+
+### Methods Available In Command Classes
+
+The following are available if you use the command generator to scaffold your commands so the proper objects are availble to the class.
+
+```php 
+
+// Get the args that were used in the command line input.
+$args = $this->_cli->get_args();
+
+// Create a directory. All directories have an index.php added on creation.
+$this->_builder->create_directory( $this->_command->build_path . '/foobar' );
+
+// Create nested directories
+$this->_builder->create_directory( $this->_command->build_path . '/foo/bar/testing' );
+
+// Create a file.
+$this->_builder->create_file( $this->_command->build_path . '/foo/bar/testing/hello.php' );
+
+// Write to file. $config would be your template to write into the file.
+$this->_builder->write_file( $this->_command->build_path . '/foo/bar/testing/hello.php', $config );
+
+// Dump your input command line arguments array into a colored output.
+$this->_cli->pretty_dump( $args );
+
+// Logging things to a log file. Also excepts a second param for custom log name.
+$this->_command->log( __CLASS__ . ' completed run.' );
+
+// Separator lines in your output with option custom param like + = etc...
+$this->_cli->separator();
+
+// New line space in your output
+$this->_cli->nl();
+
+// Outputs a separator, but can add text with another separator after it.
+$this->_cli->lines('Testing lines');
+
+// Output text now. Set second param to true for centering the text.
+$this->_cli->text('My text');
+
+// Will output all content sent to the write method at the end even if it was set in the beginning.
+$this->_command->write( __CLASS__ . ' completed run.' );
+
+```
+
 
 ### CLI Helpers
 
@@ -232,6 +343,6 @@ echo $colors->get_colored( 'Colored text and background', 'light_blue', 'black' 
 #### Benchmark (optional)
 ```php
 // Will output the time to process in seconds and also the max memory used.
-$cli->benchmark( $start );
+$cli_base->benchmark( $start );
 ```
 

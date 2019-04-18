@@ -25,9 +25,17 @@ namespace cli_builder\command;
  * @package        cli_builder\command
  */
 interface command_interface {
+
 	/**
-	 * this is the most important method in the Command pattern,
+	 * This is the most important method in the Command pattern,
 	 * The receiver goes in the constructor.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:     2019-04-18, 11:32
+	 *
+	 * @return mixed
 	 */
 	public function execute();
 }

@@ -7,10 +7,11 @@ namespace cli_builder\command;
  * invoker just knows that it can call "execute"
  */
 class add_message_date_command implements undoable_command_interface {
+
 	/**
-	 * @var receiver
+	 * @property  $_output
 	 */
-	private $output;
+	private $_output;
 
 	/**
 	 * Each concrete command is built with different receivers.
@@ -19,7 +20,7 @@ class add_message_date_command implements undoable_command_interface {
 	 * @param receiver $console
 	 */
 	public function __construct( receiver $console ) {
-		$this->output = $console;
+		$this->_output = $console;
 	}
 
 	/**
@@ -28,7 +29,7 @@ class add_message_date_command implements undoable_command_interface {
 	public function execute() {
 		// sometimes, there is no receiver and this is the command which
 		// does all the work
-		$this->output->enable_date();
+		$this->_output->enable_date();
 	}
 
 	/**
@@ -37,6 +38,6 @@ class add_message_date_command implements undoable_command_interface {
 	public function undo() {
 		// sometimes, there is no receiver and this is the command which
 		// does all the work
-		$this->output->disable_date();
+		$this->_output->disable_date();
 	}
 }
