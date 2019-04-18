@@ -46,6 +46,14 @@ Array(4)
 |   
 ```
 
+In your command class.
+
+```php
+$args  = $this->_cli->get_args();
+$myarg = ( isset( $args['arguments']['myarg'] ) ) ? $args['arguments']['myarg'] : 'foobar';
+
+```
+
 ### Getting Started.
 
 _Composer setup is coming soon which will be the preferred way._
