@@ -28,7 +28,7 @@ Array(4)
 |   
 |   [commands] => Array(1)
 |   |   
-|   |   [0] => String(6) "module"
+|   |   [0] => String(6) "mycommand"
 |   |   
 |   [options] => Array(2)
 |   |   
