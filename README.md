@@ -4,17 +4,17 @@ CLI Builder is a PHP Command Line Builder that aims to help simplify building po
 
 * [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
 * [Getting Started](#getting-started)
-* [Generating Commands](#generating-commnads)
+* [Generating Commands](#generating-commands)
 * [Setup](#setup)
 * [Registering Commands](#registering-commands)
-* [Example cli.php](#example-cli)
-* [Layout](#Layout)
+* [Example cli.php](#example-commands)
+* [Layout](#layout)
 * [Methods Available](#methods-available)
-* [Helpers / Decorators](#helpers-decorators)
-  * [Separator](#separator)
+* [Helpers / Decorators](#helpers--decorators)
+  * [Separator](#separator-full-width-of-the-current-windowseparator)
   * [Text](#text)
   * [Errors](#errors)
-  * [Progress bar](#progress-bar)
+  * [Progress bar](#progress-bar-for-long-running-processes-optional-progress-bar)
   * [Pretty Dump](#pretty-dump)
   * [Table Data](#table-data)
   * [Colors](#colors)
@@ -81,7 +81,7 @@ if( is_null( $myarg ) ) {
 
 ```
 
-### Getting Started{#getting-started}.
+### Getting Started
 
 _Composer setup is coming soon which will be the preferred way._
 
@@ -107,7 +107,7 @@ cp cli-builder/example-cli.php cli.php
 
 ```
 
-### Generating Starter Commands{#generating-commnads}
+### Generating Commands
 
 ```bash
 php cli-builder/src/generate.php command=testing namespace=foo_bar
@@ -120,7 +120,8 @@ __NOTE:__ Leaving the `namespace=` off of this command makes the namespace defau
 Namespaces will __eventually__ generate proper directory structures. `commands/foo_bar/testing.php`
 
 
-### Setup (see) example-cli.php{#setup}
+### Setup 
+(see) example-cli.php
 
 ```php
 
@@ -151,7 +152,7 @@ $builder = new \cli_builder\command\builder();
 
 ```
 
-### Registering Commands{#registering-commands}
+### Registering Commands
 
 __NOTE:__ If you change commands with a single $invoker and single $receiver they will all run and output at the end of the run.
 
@@ -183,7 +184,8 @@ echo $receiver->get_output();
 
 ```
 
-#### Example Commands cli.php{#example-cli}
+#### Example Commands
+In your cli.php or whatever your base command file is.
 
 ```php
 // Lots of commands
@@ -230,7 +232,7 @@ foreach ( $arguments['commands'] as $command ) {
 
 ```
 
-### Layout {#Layout}
+### Layout
 
 Hiding the logo and date
 ```php
@@ -239,7 +241,7 @@ $cli->header( false, false);
 
 ```
 
-### Methods Available In Command Classes{#methods-available}
+### Methods Available
 
 The following are available if you use the command generator to scaffold your commands so the proper objects are availble to the class.
 
@@ -291,7 +293,7 @@ $this->_command->write( __CLASS__ . ' completed run.' );
 ```
 
 
-### Helpers / Decorators{#helpers-decorators}
+### Helpers / Decorators
 
 All of these styling helpers are __optional__.
 
@@ -310,7 +312,7 @@ $cli->separator('+');
 
 ```
 
-#### Text {#text}
+#### Text
 ```php
 // Adds a \n (new line) return on the end.
 $cli->text('My text');
@@ -320,7 +322,7 @@ $cli->text('My centered text', true);
 
 ```
 
-#### Errors {#errors}
+#### Errors
 __NOTE:__ Exits the command.
 
 ```php
@@ -340,14 +342,14 @@ for ( $done = 0; $done <= $tasks; $done ++ ) {
 }
 ```
 
-#### Pretty Dump (optional) {#pretty-dump}
+#### Pretty Dump
 See the colored array in the [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
 
 ```php
 $cli->pretty_dump( $your_array );
 ```
 
-#### Table Data (optional) {#table-data}
+#### Table Data
 ```php
 
 // At the top of your command class after your namespace
@@ -387,7 +389,7 @@ __Table Output Example__
 +--------------------------------+------+
 ```
 
-#### Colors (optional) {#colors}
+#### Colors
 
 __In your main cli.php__
 ```php
@@ -426,7 +428,7 @@ echo $this->_cli->colors->get_colored( 'Colored text and background', 'light_blu
 | white            |             |
 
 
-#### Benchmark (optional) {#Benchmark}
+#### Benchmark
 ```php
 // Will output the time to process in seconds and also the max memory used.
 $cli_base->benchmark( $start );
