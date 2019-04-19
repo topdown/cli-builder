@@ -2,7 +2,23 @@
 
 CLI Builder is a PHP Command Line Builder that aims to help simplify building powerful CLI commands for PHP.
 
-[Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
+* [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
+* [Getting Started](#getting-started)
+* [Generating Commands](#generating-commnads)
+* [Setup](#setup)
+* [Registering Commands](#registering-commands)
+* [Example cli.php](#example-cli)
+* [Layout](#Layout)
+* [Methods Available](#methods-available)
+* [Helpers / Decorators](#helpers-decorators)
+  * [Separator](#separator)
+  * [Text](#text)
+  * [Errors](#errors)
+  * [Progress bar](#progress-bar)
+  * [Pretty Dump](#pretty-dump)
+  * [Table Data](#table-data)
+  * [Colors](#colors)
+* [Benchmark](#benchmark)
 
 The main CLI class implements a handler that parses the string passed via `$argv`
 
@@ -58,14 +74,14 @@ if( ! is_null( $myarg ) ) {
 
 // Or if you want it required you could force an error output and exit;
 if( is_null( $myarg ) ) {
-	// Will output with red background and white text.
+	// Will output with red background and white text and Exit.
 	$this->_cli->error( 'ERROR: myarg is required. Eg. myarg=something' );
 	exit;
 }
 
 ```
 
-### Getting Started.
+### Getting Started{#getting-started}.
 
 _Composer setup is coming soon which will be the preferred way._
 
@@ -91,7 +107,7 @@ cp cli-builder/example-cli.php cli.php
 
 ```
 
-### Generating Starter Commands
+### Generating Starter Commands{#generating-commnads}
 
 ```bash
 php cli-builder/src/generate.php command=testing namespace=foo_bar
@@ -104,7 +120,7 @@ __NOTE:__ Leaving the `namespace=` off of this command makes the namespace defau
 Namespaces will __eventually__ generate proper directory structures. `commands/foo_bar/testing.php`
 
 
-### Setup  (see) example-cli.php
+### Setup (see) example-cli.php{#setup}
 
 ```php
 
@@ -135,7 +151,7 @@ $builder = new \cli_builder\command\builder();
 
 ```
 
-### Registering Commands
+### Registering Commands{#registering-commands}
 
 __NOTE:__ If you change commands with a single $invoker and single $receiver they will all run and output at the end of the run.
 
@@ -167,7 +183,7 @@ echo $receiver->get_output();
 
 ```
 
-#### Example Commands cli.php
+#### Example Commands cli.php{#example-cli}
 
 ```php
 // Lots of commands
@@ -214,7 +230,7 @@ foreach ( $arguments['commands'] as $command ) {
 
 ```
 
-### Layout
+### Layout{#Layout}
 
 Hiding the logo and date
 ```php
@@ -223,7 +239,7 @@ $cli->header( false, false);
 
 ```
 
-### Methods Available In Command Classes
+### Methods Available In Command Classes{#methods-available}
 
 The following are available if you use the command generator to scaffold your commands so the proper objects are availble to the class.
 
@@ -262,19 +278,26 @@ $this->_cli->lines('Testing lines');
 // Output text now. Set second param to true for centering the text.
 $this->_cli->text('My text');
 
+// Outputs white text with a red background
+// Exits the command.
+$cli->error('My error!');
+
+// Colored text and background.
+echo $this->_cli->colors->get_colored( 'Colored text and background', 'light_blue', 'black' );
+
 // Will output all content sent to the write method at the end even if it was set in the beginning.
 $this->_command->write( __CLASS__ . ' completed run.' );
 
 ```
 
 
-### CLI Helpers / Decorators
+### Helpers / Decorators{#helpers-decorators}
 
 All of these styling helpers are __optional__.
 
 All of these helpers are available in command classes via `$this->_cli->`
 
-#### Separator (full width of the current window)
+#### Separator (full width of the current window){#separator}
 ```php
 $cli->separator();
 // Default output
@@ -287,7 +310,7 @@ $cli->separator('+');
 
 ```
 
-#### Text
+#### Text{#text}
 ```php
 // Adds a \n (new line) return on the end.
 $cli->text('My text');
@@ -297,13 +320,15 @@ $cli->text('My centered text', true);
 
 ```
 
-#### Errors
+#### Errors{#errors}
+__NOTE:__ Exits the command.
+
 ```php
-// Outputs white text with a red background.
+// Outputs white text with a red background. Exits the command.
 $cli->error('My error!');
 ```
 
-#### Progress bar for long running processes (optional)
+#### Progress bar for long running processes (optional){#progress-bar}
 ```php
 $cli->progress_bar( $done, $tasks);
 
@@ -315,14 +340,14 @@ for ( $done = 0; $done <= $tasks; $done ++ ) {
 }
 ```
 
-#### Pretty Dump (optional)
+#### Pretty Dump (optional){#pretty-dump}
 See the colored array in the [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
 
 ```php
 $cli->pretty_dump( $your_array );
 ```
 
-#### Table Data (optional)
+#### Table Data (optional){#table-data}
 ```php
 
 // At the top of your command class after your namespace
@@ -362,7 +387,7 @@ __Table Output Example__
 +--------------------------------+------+
 ```
 
-#### Colors (optional)
+#### Colors (optional){#colors}
 
 __In your main cli.php__
 ```php
@@ -401,7 +426,7 @@ echo $this->_cli->colors->get_colored( 'Colored text and background', 'light_blu
 | white            |             |
 
 
-#### Benchmark (optional)
+#### Benchmark (optional){#Benchmark}
 ```php
 // Will output the time to process in seconds and also the max memory used.
 $cli_base->benchmark( $start );
