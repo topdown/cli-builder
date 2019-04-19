@@ -230,7 +230,7 @@ foreach ( $arguments['commands'] as $command ) {
 
 ```
 
-### Layout{#Layout}
+### Layout {#Layout}
 
 Hiding the logo and date
 ```php
@@ -310,7 +310,7 @@ $cli->separator('+');
 
 ```
 
-#### Text{#text}
+#### Text {#text}
 ```php
 // Adds a \n (new line) return on the end.
 $cli->text('My text');
@@ -320,7 +320,7 @@ $cli->text('My centered text', true);
 
 ```
 
-#### Errors{#errors}
+#### Errors {#errors}
 __NOTE:__ Exits the command.
 
 ```php
@@ -328,7 +328,7 @@ __NOTE:__ Exits the command.
 $cli->error('My error!');
 ```
 
-#### Progress bar for long running processes (optional){#progress-bar}
+#### Progress bar for long running processes (optional) {#progress-bar}
 ```php
 $cli->progress_bar( $done, $tasks);
 
@@ -340,14 +340,14 @@ for ( $done = 0; $done <= $tasks; $done ++ ) {
 }
 ```
 
-#### Pretty Dump (optional){#pretty-dump}
+#### Pretty Dump (optional) {#pretty-dump}
 See the colored array in the [Screenshot](https://raw.githubusercontent.com/topdown/cli-builder/master/assets/screenshot.jpg)
 
 ```php
 $cli->pretty_dump( $your_array );
 ```
 
-#### Table Data (optional){#table-data}
+#### Table Data (optional) {#table-data}
 ```php
 
 // At the top of your command class after your namespace
@@ -387,7 +387,7 @@ __Table Output Example__
 +--------------------------------+------+
 ```
 
-#### Colors (optional){#colors}
+#### Colors (optional) {#colors}
 
 __In your main cli.php__
 ```php
@@ -426,7 +426,7 @@ echo $this->_cli->colors->get_colored( 'Colored text and background', 'light_blu
 | white            |             |
 
 
-#### Benchmark (optional){#Benchmark}
+#### Benchmark (optional) {#Benchmark}
 ```php
 // Will output the time to process in seconds and also the max memory used.
 $cli_base->benchmark( $start );
