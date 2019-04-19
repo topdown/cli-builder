@@ -43,6 +43,11 @@ class cli {
 	protected $args = [];
 
 	/**
+	 * @property cli_colors $colors
+	 */
+	public $colors;
+
+	/**
 	 * cli constructor.
 	 *
 	 * @param array $arguments
@@ -58,6 +63,8 @@ class cli {
 		if ( $this->_cols <= 0 ) {
 			$this->_cols = 30;
 		}
+
+		$this->colors = new cli_colors();
 	}
 
 	/**
@@ -192,18 +199,35 @@ class cli {
 	 *
 	 * Created:    3/27/19, 9:08 AM
 	 *
-	 * @param      $string
-	 * @param bool $center
+	 * @param               $string
+	 * @param bool          $center
 	 */
 	public function text( $string, $center = false ) {
 
 		if ( $center ) {
 			$pad = ( $this->_cols - strlen( $string ) ) / 2;
 
-			echo str_repeat( "\x20", $pad ) . "$string\n";
+			//echo str_repeat( "\x20", $pad ) . "$string\n";
+			fwrite( STDOUT, str_repeat( "\x20", $pad ) . "$string\n" );
 		} else {
-			echo "$string\n";
+			//echo "$string\n";
+			fwrite( STDOUT, "$string\n" );
 		}
+	}
+
+	/**
+	 * Colored errors for the command output.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:     2019-04-19, 10:09
+	 *
+	 * @param $string
+	 */
+	public function error( $string ) {
+		$text = $this->colors->get_colored( "$string", 'white', 'red' );
+		fwrite( STDERR, $text );
 	}
 
 	/**
@@ -339,7 +363,6 @@ Then watch for the -h in your command code.
 
 		$recursive = function ( $data, $level = 0 ) use ( &$recursive ) {
 
-			$colors      = new cli_colors();
 			$type        = ! is_string( $data ) && is_callable( $data ) ? "Callable" : ucfirst( gettype( $data ) );
 			$type_data   = null;
 			$type_color  = 'red';
@@ -404,10 +427,10 @@ Then watch for the -h in your command code.
 						echo "|   ";
 					}
 
-					echo $colors->get_colored( "[" . $key . "]", 'blue' ) . " => ";
+					echo $this->colors->get_colored( "[" . $key . "]", 'blue' ) . " => ";
 
 					// Make sure we only color strings.
-					$value_string = ( is_array( $value ) ) ? $value : $colors->get_colored( $value, $type_color );
+					$value_string = ( is_array( $value ) ) ? $value : $this->colors->get_colored( $value, $type_color );
 					call_user_func( $recursive, $value_string, $level + 1 );
 				}
 
@@ -416,11 +439,11 @@ Then watch for the -h in your command code.
 						echo "|   ";
 					}
 				} else {
-					echo $type . ( $type_length !== null ? $colors->get_colored( "(" . $type_length . ")", 'green' ) : "" ) . " ";
+					echo $type . ( $type_length !== null ? $this->colors->get_colored( "(" . $type_length . ")", 'green' ) : "" ) . " ";
 				}
 
 			} else {
-				echo $type . ( $type_length !== null ? $colors->get_colored( "(" . $type_length . ")", 'green' ) : "" ) . " ";
+				echo $type . ( $type_length !== null ? $this->colors->get_colored( "(" . $type_length . ")", 'green' ) : "" ) . " ";
 
 				if ( $type_data != null ) {
 					echo $type_data;

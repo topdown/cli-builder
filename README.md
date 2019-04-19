@@ -58,7 +58,8 @@ if( ! is_null( $myarg ) ) {
 
 // Or if you want it required you could force an error output and exit;
 if( is_null( $myarg ) ) {
-	$this->_cli->text('myarg is required. Eg. myarg=something');
+	// Will output with red background and white text.
+	$this->_cli->error( 'ERROR: myarg is required. Eg. myarg=something' );
 	exit;
 }
 
@@ -267,9 +268,11 @@ $this->_command->write( __CLASS__ . ' completed run.' );
 ```
 
 
-### CLI Helpers
+### CLI Helpers / Decorators
 
 All of these styling helpers are __optional__.
+
+All of these helpers are available in command classes via `$this->_cli->`
 
 #### Separator (full width of the current window)
 ```php
@@ -292,6 +295,12 @@ $cli->text('My text');
 // Centered Text, will center it in the window
 $cli->text('My centered text', true);
 
+```
+
+#### Errors
+```php
+// Outputs white text with a red background.
+$cli->error('My error!');
 ```
 
 #### Progress bar for long running processes (optional)
@@ -354,12 +363,22 @@ __Table Output Example__
 ```
 
 #### Colors (optional)
+
+__In your main cli.php__
 ```php
 $colors = new \cli_builder\helpers\cli_colors();
 // Just colored text.
 echo $colors->get_colored( 'Just colored text', 'green' );
 // Colored text and background.
 echo $colors->get_colored( 'Colored text and background', 'light_blue', 'black' );
+```
+
+__In your command classes__
+```php
+// Just colored text.
+echo $this->_cli->colors->get_colored( 'Just colored text', 'green' );
+// Colored text and background.
+echo $this->_cli->colors->get_colored( 'Colored text and background', 'light_blue', 'black' );
 ```
 
 | Text Colors | Background Colors |
