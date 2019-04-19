@@ -46,6 +46,11 @@ if ( php_sapi_name() === 'cli' ) {
 	}
 
 	if ( ! empty( $command_name ) ) {
+
+		if ( file_exists( 'commands/' . $command_name . '.php' ) ) {
+			die( "Command ({$command_name}) already exists in commands!\n" );
+		}
+
 		$generate = new generate( $command_name, $namespace );
 
 		if ( $generate->status() !== false ) {
