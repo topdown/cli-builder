@@ -71,6 +71,32 @@ final class builder {
 	}
 
 	/**
+	 * Copy a files content's to a new file and path.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:     2019-05-20, 12:28
+	 *
+	 * @param $file_to_copy
+	 * @param $new_file_path
+	 */
+	public function copy_file( $file_to_copy, $new_file_path ) {
+
+		if ( file_exists( $file_to_copy ) ) {
+			$content = file_get_contents( $file_to_copy );
+		} else {
+			die( "$file_to_copy does not exist." );
+		}
+
+		if ( ! file_exists( $new_file_path ) ) {
+			$this->create_file( $new_file_path );
+		}
+
+		file_put_contents( $new_file_path, $content );
+	}
+
+	/**
 	 * Recursivly create a directory tree.
 	 *
 	 * @author         Jeff Behnke <code@validwebs.com>
