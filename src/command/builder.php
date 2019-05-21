@@ -41,11 +41,12 @@ final class builder {
 	 *
 	 * Created:     2019-04-18, 11:02
 	 *
-	 * @param $file_path_name
+	 * @param      $file_path_name
+	 * @param bool $overwrite
 	 */
-	public function create_file( $file_path_name ) {
+	public function create_file( $file_path_name, $overwrite = false ) {
 
-		if ( ! file_exists( $file_path_name ) ) {
+		if ( ! file_exists( $file_path_name ) || $overwrite === true ) {
 			touch( $file_path_name );
 			fwrite( STDOUT, "Created file $file_path_name \n\n" );
 		}
@@ -59,11 +60,12 @@ final class builder {
 	 *
 	 * Created:     2019-04-18, 14:05
 	 *
-	 * @param $file_path_name
-	 * @param $content
+	 * @param      $file_path_name
+	 * @param      $content
+	 * @param bool $overwrite
 	 */
-	public function write_file( $file_path_name, $content ) {
-		if ( ! file_exists( $file_path_name ) ) {
+	public function write_file( $file_path_name, $content, $overwrite = false ) {
+		if ( ! file_exists( $file_path_name ) || $overwrite === true ) {
 			$this->create_file( $file_path_name );
 		}
 
