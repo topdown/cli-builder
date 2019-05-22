@@ -112,6 +112,25 @@ class cli {
 		}
 	}
 
+	/**
+	 * Convert a comma separated list to a trimmed array.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:     2019-05-22, 13:06
+	 *
+	 * @param string $comma_list
+	 *
+	 * @return array
+	 */
+	public function list_to_array( string $comma_list ) {
+		$array = explode( ',', $comma_list );
+		$array = array_filter( $array );
+
+		return array_map( 'trim', $array );
+	}
+
 
 	/**
 	 * A progress bar for long running processing.
