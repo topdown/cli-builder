@@ -15,7 +15,8 @@
  *
  */
 
-$start = microtime();
+$start     = microtime();
+$root_path = realpath( dirname( __DIR__ ) );
 
 ini_set( 'xdebug.var_display_max_depth', 10 );
 ini_set( 'xdebug.var_display_max_children', 256 );
@@ -26,7 +27,7 @@ ini_set( 'max_execution_time', 18000 ); // 5 hours
 
 // PHP settings
 ini_set( "log_errors", 1 );
-ini_set( "error_log", __DIR__ . '/logs/error.log' );
+ini_set( "error_log", $root_path . '/logs/error.log' );
 
 date_default_timezone_set( 'America/Chicago' );
 
@@ -44,6 +45,7 @@ include_once "src/command/command_interface.php";
 include_once "src/command/undoable_command_interface.php";
 include_once "src/command/receiver.php";
 include_once "src/command/invoker.php";
+include_once "src/command/command.php";
 
 // The instance of the CLI.
 // Required to use the built in simplicity, IE output, arg handling, progress bar, etc..

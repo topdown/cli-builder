@@ -31,30 +31,32 @@ use cli_builder\helpers\cli_table;
 class cli {
 
 	/**
+	 * @property cli_colors $colors
+	 */
+	public $colors;
+	/**
+	 * @property array $args
+	 */
+	protected $args = [];
+	/**
 	 * The number of columns in the console window.
 	 *
 	 * @property  $cols
 	 */
 	private $_cols = 30;
 
-	/**
-	 * @property array $args
-	 */
-	protected $args = [];
-
-	/**
-	 * @property cli_colors $colors
-	 */
-	public $colors;
+	public $input = '';
 
 	/**
 	 * cli constructor.
 	 *
-	 * @param array $arguments
+	 * @param array  $arguments
+	 * @param string $cli_input
 	 */
-	public function __construct( $arguments = array() ) {
+	public function __construct( $arguments = array(), $cli_input = '' ) {
 		// Set the command line arguments.
-		$this->args = $arguments;
+		$this->args      = $arguments;
+		$this->input = $cli_input;
 
 		// Set the current window columns.
 		$this->_cols = (int) exec( "tput cols" );
@@ -70,39 +72,27 @@ class cli {
 	/**
 	 * Get the command line passed arguments array.
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @return array
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
 	 * Created:     2019-04-18, 16:30
 	 *
-	 * @return array
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
 	public function get_args() {
 		return $this->args;
 	}
 
 	/**
-	 * Get the columns of the current window.
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009 - 2019 ValidWebs.com
-	 * Created:    3/27/19, 11:26 AM
+	 * @param string $custom
 	 *
-	 * @return string
-	 */
-	protected function get_columns() {
-		return $this->_cols;
-	}
-
-	/**
-	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
 	 *
 	 * Created:    3/27/19, 9:06 AM
 	 *
-	 * @param string $custom
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
 	public function separator( $custom = '' ) {
 		if ( ! empty( $custom ) ) {
@@ -115,14 +105,14 @@ class cli {
 	/**
 	 * Convert a comma separated list to a trimmed array.
 	 *
+	 * @param string $comma_list
+	 *
+	 * @return array
 	 * @author         Jeff Behnke <code@validwebs.com>
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
 	 * Created:     2019-05-22, 13:06
 	 *
-	 * @param string $comma_list
-	 *
-	 * @return array
 	 */
 	public function list_to_array( string $comma_list ) {
 		$array = explode( ',', $comma_list );
@@ -130,7 +120,6 @@ class cli {
 
 		return array_map( 'trim', $array );
 	}
-
 
 	/**
 	 * A progress bar for long running processing.
@@ -145,16 +134,17 @@ class cli {
 	 * }
 	 * </code>
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009 - 2019 ValidWebs.com
-	 *
-	 * Created:    3/27/19, 9:07 AM
-	 *
 	 * @param        $done
 	 * @param        $total
 	 * @param int    $size
 	 * @param string $char
 	 * @param string $arrow
+	 *
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *
+	 * Created:    3/27/19, 9:07 AM
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
 	public function progress_bar( $done, $total, $size = 30, $char = '█', $arrow = '' ) {
 
@@ -213,13 +203,14 @@ class cli {
 	/**
 	 * Simple text method that adds a line break to the end.
 	 *
+	 * @param               $string
+	 * @param bool          $center
+	 *
 	 * @author         Jeff Behnke <code@validwebs.com>
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
 	 * Created:    3/27/19, 9:08 AM
 	 *
-	 * @param               $string
-	 * @param bool          $center
 	 */
 	public function text( $string, $center = false ) {
 
@@ -237,51 +228,18 @@ class cli {
 	/**
 	 * Colored errors for the command output.
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @param $string
+	 *
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
 	 * Created:     2019-04-19, 10:09
 	 *
-	 * @param $string
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
 	public function error( $string ) {
 		$text = $this->colors->get_colored( "$string", 'white', 'red' );
-		fwrite( STDERR, $text );
+		fwrite( STDERR, $text . "\n" );
 	}
-
-	/**
-	 * Create a new line.
-	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009-19 ValidWebs.com
-	 *
-	 * Created:    2/8/18, 10:09 AM
-	 *
-	 */
-	public function nl() {
-		echo "\n";
-	}
-
-	/**
-	 * Create a new line separator with dashes.
-	 * If a string is incuded another line with be below.
-	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
-	 * @copyright  (c) 2009-19 ValidWebs.com
-	 *
-	 * Created:    2/8/18, 10:08 AM
-	 *
-	 * @param string $words
-	 */
-	public function lines( $words = '' ) {
-		echo str_repeat( "-", $this->_cols ) . "\n";
-		if ( ! empty( $words ) ) {
-			fwrite( STDOUT, $words );
-			$this->nl();
-			echo str_repeat( "-", $this->_cols ) . "\n";
-		}
-	}
-
 
 	/**
 	 * Find command wrapper.
@@ -296,14 +254,15 @@ class cli {
 	 * [command] debug ( outputs the full command array )
 	 *
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @param        $file
+	 * @param        $depth
+	 * @param string $path
+	 *
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
 	 * Created:    3/27/19, 9:09 AM
 	 *
-	 * @param        $file
-	 * @param        $depth
-	 * @param string $path
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
 	public function find( $file, $depth, $path = '../../' ) {
 
@@ -345,6 +304,40 @@ class cli {
 	}
 
 	/**
+	 * Create a new line separator with dashes.
+	 * If a string is incuded another line with be below.
+	 *
+	 * @param string $words
+	 *
+	 * @copyright  (c) 2009-19 ValidWebs.com
+	 *
+	 * Created:    2/8/18, 10:08 AM
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 */
+	public function lines( $words = '' ) {
+		echo str_repeat( "-", $this->_cols ) . "\n";
+		if ( ! empty( $words ) ) {
+			fwrite( STDOUT, $words );
+			$this->nl();
+			echo str_repeat( "-", $this->_cols ) . "\n";
+		}
+	}
+
+	/**
+	 * Create a new line.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009-19 ValidWebs.com
+	 *
+	 * Created:    2/8/18, 10:09 AM
+	 *
+	 */
+	public function nl() {
+		echo "\n";
+	}
+
+	/**
 	 * The CLI Builder Help content.
 	 *
 	 * @author         Jeff Behnke <code@validwebs.com>
@@ -371,12 +364,13 @@ Then watch for the -h in your command code.
 	/**
 	 * Makes it so we can have nice formatted and colored dumps in the command line.
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @param      $input
+	 *
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
 	 * Created:    3/13/19, 10:58 AM
 	 *
-	 * @param      $input
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
 	public function pretty_dump( $input ) {
 
@@ -481,6 +475,19 @@ Then watch for the -h in your command code.
 	public function __destruct() {
 		// shutdown
 		die( "\nFinished\n" );
+	}
+
+	/**
+	 * Get the columns of the current window.
+	 *
+	 * @return string
+	 * @copyright  (c) 2009 - 2019 ValidWebs.com
+	 *                 Created:    3/27/19, 11:26 AM
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 */
+	protected function get_columns() {
+		return $this->_cols;
 	}
 
 }
