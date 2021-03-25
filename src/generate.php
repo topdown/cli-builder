@@ -163,6 +163,7 @@ class generate {
 
 use cli_builder\\cli;
 use cli_builder\\command\\builder;
+use cli_builder\command\command;
 use cli_builder\\command\\command_interface;
 use cli_builder\\command\\receiver;
 
@@ -170,22 +171,8 @@ use cli_builder\\command\\receiver;
  * This concrete command calls \"print\" on the receiver, but an external.
  * invoker just knows that it can call \"execute\"
  */
-class {$this->_command_name} implements command_interface {
+class {$this->_command_name} extends command implements command_interface {
 
-	/**
-	 * @property receiver \$_command
-	 */
-	private \$_command;
-
-	/**
-	 * @property builder \$_builder
-	 */
-	private \$_builder;
-	
-	/**
-	 * @property cli \$_cli 
-	 */
-	private \$_cli;
 	
 	/**
 	 * Each concrete command is built with different receivers.
@@ -196,9 +183,7 @@ class {$this->_command_name} implements command_interface {
 	 * @param cli      \$cli
 	 */
 	public function __construct( receiver \$console, builder \$builder, cli \$cli ) {
-		\$this->_command = \$console;
-		\$this->_builder = \$builder;
-		\$this->_cli     = \$cli;
+		parent::__construct( \$console, \$builder, \$cli );
 	}
 
 
@@ -211,7 +196,8 @@ class {$this->_command_name} implements command_interface {
 	
 		// Get the args that were used in the command line input.
 		\$args = \$this->_cli->get_args();
-	
+		\$args = \$this->_args;
+		
 		// Create the build directory tree. It will be 'build/' if \$receiver->set_build_path() is not set in your root cli.php.
 		if ( ! is_dir( \$this->_command->build_path ) ) {
 			\$this->_builder->create_directory( \$this->_command->build_path );
