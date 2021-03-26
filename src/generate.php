@@ -204,7 +204,7 @@ class {$this->_command_name} extends command implements command_interface {
 		// Add the help lines.
 		\$this->_help_lines();
 		
-		if ( isset( \$this->_flags['h'] ) || isset( \$this->_options['help'] ) ) {
+		if ( in_array( 'h', \$this->_flags ) || isset( \$this->_options['help'] ) ) {
 			\$this->help();
 			\$this->_help_request = true;
 		} else {
