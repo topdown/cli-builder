@@ -108,28 +108,44 @@ class generate {
 	}
 
 	/**
-	 * Returns the status of generating.
+	 * Save the command file.
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @param $file_name
+	 * @param $data
+	 *
+	 * @return bool|int
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
-	 * Created:     2019-03-27, 16:11
+	 * Created:     2019-03-27, 16:08
 	 *
-	 * @return bool
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
-	public function status() {
+	protected function save( $file_name, $data ) {
+
+		if ( ! dir( 'commands' ) ) {
+			die( 'Please create the directory commands' );
+		} else {
+			// We need to add directory creation.
+			if ( ! empty( $this->_namespace ) ) {
+				$this->_status = file_put_contents( "commands/{$file_name}.php", $data );
+			} else {
+				$this->_status = file_put_contents( "commands/{$file_name}.php", $data );
+			}
+
+		}
+
 		return $this->_status;
 	}
 
 	/**
 	 * The template for the command we are building.
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @return string
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
 	 * Created:     2019-03-27, 16:08
 	 *
-	 * @return string
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
 	protected function template() {
 
@@ -185,6 +201,9 @@ class {$this->_command_name} extends command implements command_interface {
 	public function __construct( receiver \$console, builder \$builder, cli \$cli ) {
 		parent::__construct( \$console, \$builder, \$cli );
 		
+		// Add the help lines.
+		\$this->_help_lines();
+		
 		if ( isset( \$this->_flags['h'] ) || isset( \$this->_options['help'] ) ) {
 			\$this->help();
 			\$this->_help_request = true;
@@ -225,6 +244,12 @@ class {$this->_command_name} extends command implements command_interface {
 		\$this->_command->log(__CLASS__ . ' completed run.');
 	}
 	
+	private function _help_lines() {
+		// Example
+		//\$this->add_help_line('-h, --help', 'Output this commands help info.');
+
+	}
+	
 	/**
 	 * Help output for \"$this->_command_name\".
 	 *
@@ -236,22 +261,12 @@ class {$this->_command_name} extends command implements command_interface {
 		// Outputs a reminder to add help.
 		parent::help();
 		
-		// Example
-		//\$this->add_help_line('-h, --help', 'Output this commands help info.');
-
 		//\$help = \$this->get_help();
 
 		// Work with the array
 		//print_r( \$help );
 		// Or output a table
 		//\$this->help_table();
-	}
-	
-	/**
-	 * Shutdown
-	 */
-	public function __destruct() {
-		parent::__destruct(); 
 	}
 }
 ";
@@ -260,32 +275,16 @@ class {$this->_command_name} extends command implements command_interface {
 	}
 
 	/**
-	 * Save the command file.
+	 * Returns the status of generating.
 	 *
-	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @return bool
 	 * @copyright  (c) 2009 - 2019 ValidWebs.com
 	 *
-	 * Created:     2019-03-27, 16:08
+	 * Created:     2019-03-27, 16:11
 	 *
-	 * @param $file_name
-	 * @param $data
-	 *
-	 * @return bool|int
+	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
-	protected function save( $file_name, $data ) {
-
-		if ( ! dir( 'commands' ) ) {
-			die( 'Please create the directory commands' );
-		} else {
-			// We need to add directory creation.
-			if ( ! empty( $this->_namespace ) ) {
-				$this->_status = file_put_contents( "commands/{$file_name}.php", $data );
-			} else {
-				$this->_status = file_put_contents( "commands/{$file_name}.php", $data );
-			}
-
-		}
-
+	public function status() {
 		return $this->_status;
 	}
 }

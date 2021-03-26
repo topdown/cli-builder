@@ -71,7 +71,7 @@ class command {
 	/**
 	 * @var array
 	 */
-	private static $_help_lines = [];
+	private $_help_lines = [];
 
 	protected $_help_request = false;
 
@@ -106,7 +106,7 @@ class command {
 	 *
 	 */
 	public function help() {
-		if ( empty( self::$_help_lines ) ) {
+		if ( empty( $this->_help_lines ) ) {
 			$this->_cli->error( "Your command is missing the help info. \nPlease fill in the help method." );
 		}
 	}
@@ -124,7 +124,7 @@ class command {
 	 *
 	 */
 	public function add_help_line( $option, $definition ) {
-		self::$_help_lines[ get_called_class() ][ trim( $option ) ] = trim( $definition );
+		$this->_help_lines[ get_called_class() ][ trim( $option ) ] = trim( $definition );
 	}
 
 	/**
@@ -185,11 +185,11 @@ class command {
 	 * @author         Jeff Behnke <code@validwebs.com>
 	 */
 	public function get_help() {
-		return ( isset( self::$_help_lines[ get_called_class() ] ) ) ? self::$_help_lines[ get_called_class() ] : array();
+		return ( isset( $this->_help_lines[ get_called_class() ] ) ) ? $this->_help_lines[ get_called_class() ] : array();
 	}
 
 	public function __destruct() {
-		if ( empty( self::$_help_lines ) ) {
+		if ( empty( $this->_help_lines ) ) {
 			$this->_cli->error( "Your command is missing the help info. \nPlease fill in the help method." );
 		}
 	}
