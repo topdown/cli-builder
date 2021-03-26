@@ -201,7 +201,7 @@ LOGO;
 					// This check fixes that.
 					if ( isset( $args[0] ) ) {
 
-						while ( strpos( $args[0], '-' ) !== 0 ) {
+						if ( strpos( $args[0], '-' ) !== 0 ) {
 							$value .= array_shift( $args ) . ' ';
 						}
 

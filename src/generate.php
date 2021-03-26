@@ -184,6 +184,14 @@ class {$this->_command_name} extends command implements command_interface {
 	 */
 	public function __construct( receiver \$console, builder \$builder, cli \$cli ) {
 		parent::__construct( \$console, \$builder, \$cli );
+		
+		if ( isset( \$this->_flags['h'] ) || isset( \$this->_options['help'] ) ) {
+			\$this->help();
+			\$this->_help_request = true;
+		} else {
+			// Any setup you need.
+			
+		}
 	}
 
 
@@ -194,6 +202,10 @@ class {$this->_command_name} extends command implements command_interface {
 	 */
 	public function execute() {
 	
+		if ( \$this->_help_request ) {
+			return;
+		}
+		
 		// Get the args that were used in the command line input.
 		\$args = \$this->_cli->get_args();
 		\$args = \$this->_args;
@@ -211,6 +223,35 @@ class {$this->_command_name} extends command implements command_interface {
 
 		// Adding completion of the command run to the log.
 		\$this->_command->log(__CLASS__ . ' completed run.');
+	}
+	
+	/**
+	 * Help output for \"$this->_command_name\".
+	 *
+	 * @return string
+	 */
+	public function help() {
+	
+		// You can comment this call out once you add help.
+		// Outputs a reminder to add help.
+		parent::help();
+		
+		// Example
+		//\$this->add_help_line('-h, --help', 'Output this commands help info.');
+
+		//\$help = \$this->get_help();
+
+		// Work with the array
+		//print_r( \$help );
+		// Or output a table
+		//\$this->help_table();
+	}
+	
+	/**
+	 * Shutdown
+	 */
+	public function __destruct() {
+		parent::__destruct(); 
 	}
 }
 ";

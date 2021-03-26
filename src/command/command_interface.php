@@ -38,4 +38,16 @@ interface command_interface {
 	 * @return mixed
 	 */
 	public function execute();
+
+	/**
+	 * Every commend is required to define help output to explain the command.
+	 *
+	 * @return mixed
+	 * @copyright  (c) 2009 - 2021 ValidWebs.com
+	 *
+	 * Created:     3/26/21, 7:24 AM
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 */
+	public function help();
 }

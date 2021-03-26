@@ -34,6 +34,12 @@ class cli {
 	 * @property cli_colors $colors
 	 */
 	public $colors;
+
+	/**
+	 * @var string
+	 */
+	public $input = '';
+
 	/**
 	 * @property array $args
 	 */
@@ -45,7 +51,6 @@ class cli {
 	 */
 	private $_cols = 30;
 
-	public $input = '';
 
 	/**
 	 * cli constructor.
@@ -55,7 +60,7 @@ class cli {
 	 */
 	public function __construct( $arguments = array(), $cli_input = '' ) {
 		// Set the command line arguments.
-		$this->args      = $arguments;
+		$this->args  = $arguments;
 		$this->input = $cli_input;
 
 		// Set the current window columns.

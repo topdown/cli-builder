@@ -20,6 +20,7 @@
 namespace cli_builder\command;
 
 use cli_builder\cli;
+use cli_builder\helpers\cli_table;
 
 /**
  * This class provides the info needed to the custom commands.
@@ -67,6 +68,12 @@ class command {
 	 */
 	protected $_arguments;
 
+	/**
+	 * @var array
+	 */
+	private static $_help_lines = [];
+
+	protected $_help_request = false;
 
 	/**
 	 * Each concrete command is built with different receivers.
@@ -89,6 +96,103 @@ class command {
 		$this->_options   = ( isset( $this->_args['options'] ) ) ? $this->_args['options'] : array();
 	}
 
+	/**
+	 * Reminder to add help for the command.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2021 ValidWebs.com
+	 *
+	 * Created:     3/26/21, 9:28 AM
+	 *
+	 */
+	public function help() {
+		if ( empty( self::$_help_lines ) ) {
+			$this->_cli->error( "Your command is missing the help info. \nPlease fill in the help method." );
+		}
+	}
+
+	/**
+	 * Add command help lines.
+	 *
+	 * @param $option
+	 * @param $definition
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2021 ValidWebs.com
+	 *
+	 * Created:     3/26/21, 9:28 AM
+	 *
+	 */
+	public function add_help_line( $option, $definition ) {
+		self::$_help_lines[ get_called_class() ][ trim( $option ) ] = trim( $definition );
+	}
+
+	/**
+	 * Output a table with all the help for the called command.
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 * @copyright  (c) 2009 - 2021 ValidWebs.com
+	 *
+	 * Created:     3/26/21, 9:28 AM
+	 *
+	 */
+	public function help_table() {
+
+		$help = $this->get_help();
+
+		if ( ! empty( $help ) && is_array( $help ) ) {
+
+			$help_array = [];
+			$i          = 0;
+
+			foreach ( $help as $cmd => $def ) {
+
+				$index = $i ++;
+
+				$help_array[ $index ]['called']     = trim( $cmd );
+				$help_array[ $index ]['definition'] = trim( $def );
+			}
+
+			$tbl = new cli_table();
+			$tbl->set_headers(
+				array(
+					'Caller',
+					'Definition'
+				)
+			);
+
+			foreach ( $help_array as $item ) {
+				$tbl->add_row(
+					array(
+						$item['called'],
+						$item['definition']
+					)
+				);
+			}
+			// Output the table.
+			echo $tbl->get_table();
+		}
+	}
+
+	/**
+	 * Return a help array for the called command.
+	 *
+	 * @return array|mixed
+	 * @copyright  (c) 2009 - 2021 ValidWebs.com
+	 *
+	 * Created:     3/26/21, 9:29 AM
+	 *
+	 * @author         Jeff Behnke <code@validwebs.com>
+	 */
+	public function get_help() {
+		return ( isset( self::$_help_lines[ get_called_class() ] ) ) ? self::$_help_lines[ get_called_class() ] : array();
+	}
+
+	public function __destruct() {
+		if ( empty( self::$_help_lines ) ) {
+			$this->_cli->error( "Your command is missing the help info. \nPlease fill in the help method." );
+		}
+	}
 }
 
 // End command.php
